@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import User from "../model/userMode";
+import User from "../model/userModel";
 import { compare, encrypt } from "../utils/bcrypt";
 
 const login = async (req : Request, res : Response ) => {
