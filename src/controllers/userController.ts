@@ -41,12 +41,12 @@ const signup = async (req : Request, res : Response) => {
 }
 
 const validateUser = async (req : Request, res : Response) => {
-   console.log(req)
 
   const validUser = await User.findOne({ _id: req.user._id }).select("-password");
   if(!validUser) return res.json({ message: 'user is not valid' });
-       
 
+
+     
 }
 
 export { login, signup , validateUser }

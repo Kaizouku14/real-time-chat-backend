@@ -7,16 +7,16 @@ export const refreshToken = async (
     req: Request,
     res: Response
   ) => {
-    try {
+    try {    
         const cookies = req.cookies;
-  
+
         if (!cookies.jwt) return res.status(401).json({ message : "Unauthorized"});
   
         const refreshToken = cookies.jwt;
   
         try {
             const { tokenDetails } = await verifyRefreshToken(refreshToken);
-            const payload = { _id: tokenDetails?._id, username: tokenDetails?.username, email: tokenDetails?.email, roles: tokenDetails?.roles };
+            const payload = { _id: tokenDetails?._id, username: tokenDetails?.username, email: tokenDetails?.email };
             jwt.sign(
                 payload,
                 CONFIG.JWT_SECRET_KEY,
