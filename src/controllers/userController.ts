@@ -22,6 +22,13 @@ const login = async (req : Request, res : Response ) => {
       }
    );
 
+  res.cookie('jwt', accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000,
+  }); 
+
   res.status(200).send({token : accessToken , message : "Login successfully"});  
 }
 
@@ -37,6 +44,10 @@ const signup = async (req : Request, res : Response) => {
   new User({...req.body, password : hashedPassword }).save();
 
   return res.status(200).send("User account created successfully.");
+}
+
+const validateUser = async (req : Request , res : Response) => {
+  
 }
 
 export { login, signup }
