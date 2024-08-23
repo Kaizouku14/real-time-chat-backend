@@ -4,7 +4,7 @@
   "description": "practicing real time chat",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts"
+    "start": "nodemon --exec ts-node --transpile-only src/index.ts"
   },
   "author": "kaizouku",
   "license": "ISC",

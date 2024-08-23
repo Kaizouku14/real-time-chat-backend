@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import User from "../model/userModel";
 import { compare, encrypt } from "../utils/bcrypt";
-import { generateToken } from "../utils/generateToken";
+import { generateTokens } from "../utils/generateToken";
 
 const login = async (req : Request, res : Response ) => {
   const { email , password } = req.body;
@@ -14,19 +14,13 @@ const login = async (req : Request, res : Response ) => {
   const passwordMatched = await compare(password, userFound.password);
   if(!passwordMatched) return res.status(401).send("Invalid Password"); 
 
-  const accessToken = generateToken(
-       { 
-        _id : userFound._id, 
-        username : userFound.username,  
-        email : userFound.email
-      }
-   );
+  const{ accessToken , refreshToken } = await generateTokens(userFound);
 
-  res.cookie('jwt', accessToken, {
+  res.cookie('jwt', refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
   }); 
 
   res.status(200).send({token : accessToken , message : "Login successfully"});  
@@ -46,8 +40,13 @@ const signup = async (req : Request, res : Response) => {
   return res.status(200).send("User account created successfully.");
 }
 
-const validateUser = async (req : Request , res : Response) => {
-  
+const validateUser = async (req : Request, res : Response) => {
+   console.log(req)
+
+  const validUser = await User.findOne({ _id: req.user._id }).select("-password");
+  if(!validUser) return res.json({ message: 'user is not valid' });
+       
+
 }
 
-export { login, signup }
+export { login, signup , validateUser }

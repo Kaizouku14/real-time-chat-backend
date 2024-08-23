@@ -1,28 +1,30 @@
 import jwt from 'jsonwebtoken'
 import CONFIG from '../constants/constants'
-import { Types } from 'mongoose'
-
-interface IUser {
-    _id : Types.ObjectId
-    username : string
-    email : string
-}
+import { IUser } from '../interface/User';
 
 /**
- * Generates a JSON Web Token (JWT) for the given user.
+ * Generates access and refresh tokens for a given user.
  *
  * @param {IUser} user - The user object containing _id, username, and email.
- * @return {string} The generated JWT token.
+ * @return {Promise<{ accessToken: string, refreshToken: string }>} A promise resolving to an object containing the access token and refresh token.
  */
 
-export const generateToken = (user : IUser): string => {
-    const generatedToken = jwt.sign
-       ({ 
-           id : user._id, 
-           user : user.username, 
-           email : user.email 
-        }, 
-        CONFIG.JWT_SECRET_KEY, {  expiresIn: '24h' })
+export const generateTokens = async (user : IUser ) => {
+	try {
+		const payload = { _id: user._id.toString(), username : user.username, email : user.email};
+		const accessToken = jwt.sign(
+			payload,
+			CONFIG.JWT_SECRET_KEY,
+			{ expiresIn: "1m" }
+		);
+		const refreshToken = jwt.sign(
+			payload,
+			CONFIG.JWT_REFRESH_KEY,
+			{ expiresIn: "30d" }
+		);
 
-   return generatedToken;
-}
+		return Promise.resolve({ accessToken, refreshToken });
+	} catch (err) {
+		return Promise.reject(err);
+	}
+};
