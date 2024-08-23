@@ -1,14 +1,17 @@
 import express from 'express';
-import 'dotenv/config'
 import userRoutes from './routes/user';
+import dbConnection from './database/dbConnection';
+import CONFIG from './constants/constants';
 
 const app = express();
-const SERVER_PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+dbConnection();  // database connection
 
 //routes
 app.use('/', userRoutes); 
 
-app.use(express.json());
-app.listen(SERVER_PORT, () => {
-    console.log('Listening to port', SERVER_PORT);
+app.listen(CONFIG.SERVER_PORT, () => {
+    console.log('Listening to port', CONFIG.SERVER_PORT);
 });
+

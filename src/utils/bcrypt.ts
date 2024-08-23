@@ -13,6 +13,13 @@ const encrypt = (str : string): Promise<string> => {
   return hashString;
 }
 
+/**
+ * Compares a given password with a current password using bcrypt.
+ *
+ * @param {string} password - the password to compare
+ * @param {string} currentPass - the current password to compare against
+ * @return {Promise<boolean>} a promise that resolves to true if the passwords match, false otherwise
+ */
 const compare = (password : string, currentPass : string) : Promise<boolean> => {
   return bcrypt.compare(password, currentPass);
 }
