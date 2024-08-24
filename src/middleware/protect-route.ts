@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import CONFIG from "../constants/constants";
 import User from "../model/userModel";
 
-const Auth = (
+const protectedRoute = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -26,4 +26,4 @@ const Auth = (
     });
   };
 
-export default Auth;
+export default protectedRoute;

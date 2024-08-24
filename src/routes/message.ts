@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { sendMessage } from "../controllers/messageController";
-import Auth from "../middleware/Auth";
+import protectedRoute from "../middleware/protect-route";
+import { sendMessage } from "../controllers/message-controller";
 
 const messageRoutes = Router();
 
-messageRoutes.get('/:id', Auth); 
-messageRoutes.post('/send/:id', Auth, sendMessage); //routes for sending a message
+messageRoutes.get('/:id', protectedRoute); 
+messageRoutes.post('/send/:id', protectedRoute, sendMessage); //routes for sending a message
 
 export default messageRoutes;

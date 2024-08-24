@@ -6,11 +6,12 @@ import CONFIG from "../constants/constants";
 const app = express();
 
 const server = http.createServer(app);
-
+  
 interface UserSocketMap {
   [key: string]: string;
 }
 
+//all the active user will be stored in this object
 const userSocketMap: UserSocketMap = {}; // {userId: socketId}
 
 // Configure the Socket.io server with CORS
@@ -37,13 +38,12 @@ io.on("connection", (socket) => {
   // Emit the list of online users (userIds)
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-  // Handle user disconnection
-  socket.on("disconnect", () => {
+  socket.on("disconnect", () => { 
     console.log("User disconnected:", socket.id);
 
     if (userId) {
-      delete userSocketMap[userId];
-      io.emit("getOnlineUsers", Object.keys(userSocketMap));
+      delete userSocketMap[userId]; // remove disconnected user in the userSocketMap object
+      io.emit("getOnlineUsers", Object.keys(userSocketMap)); // r-render online user
     }
   });
 });
