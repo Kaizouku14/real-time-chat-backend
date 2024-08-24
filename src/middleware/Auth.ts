@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, request } from "express"
+import { Request, Response, NextFunction } from "express"
 import jwt from 'jsonwebtoken'
 import CONFIG from "../constants/constants";
 import User from "../model/userModel";
@@ -14,14 +14,14 @@ const Auth = (
   
     jwt.verify(token, CONFIG.JWT_SECRET_KEY, async (err : any, user : any) => {
       if (err) return res.sendStatus(403);
-      if(!user) return res.sendStatus(401);
 
-      const verifiedUser = await User
-             .findOne({ _id : user._id})
-             .select('-password');
+      const verifiedUser = await User.findById({ _id : user._id}).select("-password");
+
+      if (!verifiedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
 
       req.user = verifiedUser;
-      req.userID = verifiedUser?._id.toString();
       next();
     });
   };
