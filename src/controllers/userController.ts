@@ -41,12 +41,17 @@ const signup = async (req : Request, res : Response) => {
 }
 
 const validateUser = async (req : Request, res : Response) => {
-
-  const validUser = await User.findOne({ _id: req.user._id }).select("-password");
-  if(!validUser) return res.json({ message: 'user is not valid' });
-
-
-     
+  try{
+    const validUser = await User.findOne({ _id: req.user._id }).select("-password");
+    if(!validUser) return res.json({ message: 'user is not valid' });
+  
+    res.status(201).json({
+      user: validUser,
+      token: req.token,
+    });
+  }catch(err){
+    console.log(err)
+  }    
 }
 
 export { login, signup , validateUser }

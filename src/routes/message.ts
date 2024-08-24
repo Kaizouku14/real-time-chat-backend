@@ -6,3 +6,4 @@ const messageRoutes = Router();
 
 messageRoutes.post('/', Auth, sendMessage); //routes for sending a message
 
+export default messageRoutes;
