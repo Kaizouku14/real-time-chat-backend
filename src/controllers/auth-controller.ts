@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import User from "../model/userModel";
+import User from "../model/user-model";
 import { compare, encrypt } from "../utils/bcrypt";
 import { generateTokens } from "../utils/generateToken";
 

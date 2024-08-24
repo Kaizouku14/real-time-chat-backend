@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import jwt from 'jsonwebtoken'
 import CONFIG from "../constants/constants";
-import User from "../model/userModel";
+import User from "../model/user-model";
 
 const protectedRoute = (
     req: Request,
@@ -16,10 +16,7 @@ const protectedRoute = (
       if (err) return res.sendStatus(403);
 
       const verifiedUser = await User.findById({ _id : user._id}).select("-password");
-
-      if (!verifiedUser) {
-        return res.status(404).json({ error: "User not found" });
-      }
+      if (!verifiedUser) return res.status(404).json({ error: "User not found" });
 
       req.user = verifiedUser;
       next();

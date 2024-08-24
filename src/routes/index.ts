@@ -1,4 +1,5 @@
-import authRoutes from "./auth";
-import messageRoutes from "./message";
+import authRoutes from "./auth-route";
+import messageRoutes from "./message-route";
+import usersRoutes from "./user-route";
 
-export { authRoutes, messageRoutes }
+export { authRoutes, messageRoutes, usersRoutes }

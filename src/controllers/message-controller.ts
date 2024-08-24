@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import Chat from "../model/chatModel";
-import Message from "../model/messageModel";
+import Chat from "../model/chat-model";
+import Message from "../model/message-model";
 import { getReceiverSocketId, io } from "../socket/socket";
 
 const sendMessage = async (req : Request, res : Response) => {
